@@ -27,3 +27,22 @@ The Edge Detection Project is a web application designed to showcase edge detect
 
    ```bash
    git clone https://github.com/your-username/edge-detection-project.git
+   ```
+
+## Installation
+
+No installation is required to use this web application. Simply clone the repository and open the `index.html` file in your web browser.
+
+## Contributing
+
+Contributions are welcome! Feel free to submit bug reports, feature requests, or pull requests.
+
+1. Fork the repository.
+2. Create your feature branch (`git checkout -b feature/your-feature`).
+3. Commit your changes (`git commit -am 'Add some feature'`).
+4. Push to the branch (`git push origin feature/your-feature`).
+5. Create a new Pull Request.
+
+## License
+
+This project is licensed under the MIT License.
