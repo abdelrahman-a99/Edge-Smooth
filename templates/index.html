@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Upload and Process</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+    <h1>Upload an Image</h1>
+
+    <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*">
+        <label for="algorithm">Choose an algorithm:</label>
+
+        <select name="algorithm" id="algorithm">
+            <option value="edge_detection">Edge Detection</option>
+            <option value="smoothing">Smoothing</option>
+            <option value="cnn_blur">Blur</option>
+            <option value="negative_transform">Negative Transform (Grayscale)</option>
+            <option value="negative_transform_color">Negative Transform (Color)</option>
+        </select>
+
+        <button type="submit">Upload</button>
+    </form>
+
+    <h2>Processed Image:</h2>
+
+    <img id="processedImage" src="" alt="Processed Image" style="display:none;">
+
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+
+</html>
