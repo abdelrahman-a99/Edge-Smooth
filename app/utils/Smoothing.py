@@ -4,14 +4,13 @@ from skimage.io import imread
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from tqdm.keras import TqdmCallback
-import os
 
-def denoise_image(image_path, output_path, num_iters=200, init_lr=0.01, sig=30):
+def denoise_image(image_path, output_path, num_iters=500, init_lr=0.01, sig=15):
     print(tf.version)
     print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
     # Function to add noise to an image
-    def get_noisy_img(img, sig=30):
+    def get_noisy_img(img, sig=15):
         sigma = sig / 255.
         noise = np.random.normal(scale=sigma, size=img.shape)
         img_noisy = np.clip(img + noise, 0, 1).astype(np.float32)
@@ -36,7 +35,7 @@ def denoise_image(image_path, output_path, num_iters=200, init_lr=0.01, sig=30):
         inputs = tf.keras.Input(shape=input_shape)
         x = inputs
         if noise_reg:
-            x = tf.keras.layers.GaussianNoise(noise_reg['stddev'])(x)
+            x = tf.keras.layers.GaussianNoise(noise_reg['stddev'] * 0.5)(x)
 
         skips = []
         for filters in layers:
@@ -54,7 +53,7 @@ def denoise_image(image_path, output_path, num_iters=200, init_lr=0.01, sig=30):
         return tf.keras.Model(inputs, outputs, name="DeepImagePrior")
 
     # Deep Image Prior workflow
-    def dip_workflow(x0, x_true, model, input_shape, num_iters=200, init_lr=0.01):
+    def dip_workflow(x0, x_true, model, input_shape, num_iters=500, init_lr=0.01):
         z = tf.random.uniform((1,) + input_shape, dtype=tf.float32)
         
         model.compile(optimizer=tf.keras.optimizers.Adam(init_lr), loss=tf.keras.losses.MeanSquaredError())
