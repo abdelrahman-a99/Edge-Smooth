@@ -4,31 +4,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Upload and Process</title>
+    <title>EdgeSmooth</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 
 <body>
-    <h1>Upload an Image</h1>
+    <h1>EdgeSmooth Web App</h1>
 
+    <!-- Messages Container -->
+    <div id="messageContainer"></div>
+
+    <!-- Upload Form -->
     <form id="uploadForm" action="/upload" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" accept="image/*">
-        <label for="algorithm">Choose an algorithm:</label>
+        <div class="form-group">
+            <label for="file">Select Image:</label>
+            <input type="file" id="file" name="file" accept="image/*" required>
+            <small class="file-info">Supported formats: PNG, JPG, JPEG (Max size: 16MB)</small>
+        </div>
 
-        <select name="algorithm" id="algorithm">
-            <option value="edge_detection">Edge Detection</option>
-            <option value="smoothing">Smoothing</option>
-            <option value="cnn_blur">Blur</option>
-            <option value="negative_transform">Negative Transform (Grayscale)</option>
-            <option value="negative_transform_color">Negative Transform (Color)</option>
-        </select>
+        <div class="form-group">
+            <label for="algorithm">Choose Processing Algorithm:</label>
+            <select name="algorithm" id="algorithm" required>
+                <option value="">Select an algorithm</option>
+                <option value="edge_detection">Edge Detection</option>
+                <option value="smoothing">Smoothing</option>
+                <option value="cnn_blur">Blur</option>
+                <option value="negative_transform">Negative Transform (Grayscale)</option>
+                <option value="negative_transform_color">Negative Transform (Color)</option>
+            </select>
+        </div>
 
-        <button type="submit">Upload</button>
+        <div class="button-group">
+            <button type="submit" id="submitBtn">Process Image</button>
+            <button type="button" id="resetBtn">Reset</button>
+        </div>
     </form>
 
-    <h2>Processed Image:</h2>
+    <!-- Progress Bar -->
+    <div class="progress-container" id="progressContainer">
+        <div class="progress-bar">
+            <div class="progress" id="progressBar"></div>
+        </div>
+        <p id="progressText">Processing: 0%</p>
+    </div>
 
-    <img id="processedImage" src="" alt="Processed Image" style="display:none;">
+    <!-- Loading Spinner -->
+    <div class="spinner" id="spinner"></div>
+
+    <!-- Image Preview -->
+    <div class="preview-container">
+        <div class="preview-box">
+            <h3>Original Image</h3>
+            <div class="image-preview">
+                <img id="originalPreview" src="" alt="Original Image Preview">
+            </div>
+        </div>
+        <div class="preview-box">
+            <h3>Processed Image</h3>
+            <div class="image-preview">
+                <img id="processedPreview" src="" alt="Processed Image Preview">
+            </div>
+        </div>
+    </div>
 
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </body>
