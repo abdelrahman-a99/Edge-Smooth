@@ -186,9 +186,11 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                return response.json().then(err => {
+                    throw new Error(err.error || 'Processing failed');
+                });
             }
-            return response.text();
+            return response.json();
         })
         .then(data => {
             clearInterval(progressInterval);
@@ -196,13 +198,17 @@ document.addEventListener('DOMContentLoaded', function() {
             progressBar.style.width = '100%';
             progressText.textContent = 'Processing: 100%';
             
-            // Show processed image with timestamp to prevent caching
-            const timestamp = new Date().getTime();
-            processedPreview.src = `/static/processed/${file.name}?t=${timestamp}`;
-            showMessage('Image processed successfully!', 'success');
-            
-            // Enable reset button only after successful processing
-            resetBtn.disabled = false;
+            if (data.success) {
+                // Show processed image with timestamp to prevent caching
+                const timestamp = new Date().getTime();
+                processedPreview.src = `/static/processed/${data.filename}?t=${timestamp}`;
+                showMessage('Image processed successfully!', 'success');
+                
+                // Enable reset button only after successful processing
+                resetBtn.disabled = false;
+            } else {
+                throw new Error(data.error || 'Processing failed');
+            }
         })
         .catch(error => {
             clearInterval(progressInterval);
