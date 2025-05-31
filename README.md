@@ -1,93 +1,119 @@
-# Image Processing Web Application
+# Edge Smooth - Image Processing Application
 
-This is a web application that provides various image processing capabilities including:
-- Edge Detection
-- Image Smoothing
-- Blur Effects
-- Negative Transformation
+A Flask-based web application for advanced image processing, featuring edge detection, smoothing, and other image enhancement techniques.
 
 ## Features
 
-- **Edge Detection**: Implements Sobel edge detection algorithm
-- **Image Smoothing**: Uses Deep Image Prior for image denoising
-- **Blur Effects**: CNN-based image blurring
-- **Negative Transformation**: Color and grayscale image inversion
+- **Edge Detection**: Identify and highlight edges in images using advanced algorithms
+- **Image Smoothing**: Apply deep learning-based smoothing to reduce noise while preserving important details
+- **Negative Transformation**: Convert images to their negative form in both grayscale and color modes
+- **CNN-based Blur**: Apply convolutional neural network-based blur effects
+- **Real-time Preview**: See the original and processed images side by side
+- **Progress Tracking**: Visual feedback during image processing
+- **Error Handling**: Comprehensive error handling and user feedback
 
-## Requirements
+## Technologies Used
 
-- Python 3.8+
-- Flask
-- OpenCV
-- TensorFlow
-- NumPy
-- scikit-image
-- Pillow
+- **Backend**: Python, Flask
+- **Frontend**: HTML, CSS, JavaScript
+- **Image Processing**: OpenCV, TensorFlow, scikit-image
+- **Deep Learning**: TensorFlow for image smoothing
+- **Development**: Git for version control
 
-## Installation
+## Setup Instructions
 
 1. Clone the repository:
-```bash
-git clone https://github.com/abdelrahman-a99/Edge-Smooth.git
-cd Edge-Smooth
-```
+   ```bash
+   git clone https://github.com/abdelrahman-a99/Edge-Smooth.git
+   cd Edge-Smooth
+   ```
 
-2. Install the required packages:
-```bash
-pip install -r requirements.txt
-```
+2. Create a virtual environment (recommended):
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Run the application:
+   ```bash
+   python app/app.py
+   ```
+
+5. Open your browser and navigate to:
+   ```
+   http://127.0.0.1:5000
+   ```
 
 ## Usage
 
-1. Run the Flask application:
-```bash
-python app.py
-```
+1. **Upload an Image**:
+   - Click the upload button or drag and drop an image
+   - Supported formats: JPG, JPEG, PNG
+   - Maximum file size: 16MB
 
-2. Open your web browser and navigate to:
-```
-http://localhost:5000
-```
+2. **Select Processing Algorithm**:
+   - Edge Detection: Highlights edges in the image
+   - Smoothing: Reduces noise while preserving details
+   - Negative Transformation: Converts image to negative form
+   - CNN Blur: Applies neural network-based blur
 
-3. Upload an image and select the desired processing algorithm.
+3. **Process Image**:
+   - Click the "Process" button
+   - Wait for the processing to complete
+   - View the results in the preview panel
+
+4. **Reset**:
+   - Use the reset button to start over with a new image
 
 ## Project Structure
 
 ```
-├── app.py                 # Main Flask application
-├── Blur.py               # Blur effect implementation
-├── Edge_detection.py     # Edge detection implementation
-├── Negative_Transformation.py  # Negative transformation implementation
-├── Smoothing.py          # Image smoothing implementation
-├── static/              # Static files (CSS, JS, images)
-│   ├── uploads/        # Uploaded images
-│   └── processed/      # Processed images
-└── templates/          # HTML templates
+Edge-Smooth/
+├── app/
+│   ├── static/
+│   │   ├── css/
+│   │   ├── js/
+│   │   ├── uploads/
+│   │   └── processed/
+│   ├── templates/
+│   └── utils/
+│       ├── Edge_detection.py
+│       ├── Smoothing.py
+│       ├── Negative_Transformation.py
+│       └── Blur.py
+├── requirements.txt
+└── README.md
 ```
+
+## Error Handling
+
+The application includes comprehensive error handling for:
+- Invalid file types
+- File size limits
+- Processing errors
+- Server-side issues
+
+All errors are logged and displayed to the user with clear messages.
 
 ## Contributing
 
-Feel free to submit issues and enhancement requests!
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
 ## License
 
-MIT License
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-Copyright (c) 2024 Abdelrahman
+## Acknowledgments
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. 
+- TensorFlow team for the deep learning framework
+- Flask team for the web framework
+- OpenCV and scikit-image teams for image processing libraries 
