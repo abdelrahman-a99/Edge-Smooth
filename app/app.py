@@ -4,6 +4,7 @@ import os
 import logging
 from werkzeug.utils import secure_filename
 from typing import Optional, Tuple
+import traceback
 
 from app.utils.Smoothing import denoise_image
 from app.utils.Edge_detection import Edge_Detection
@@ -89,8 +90,17 @@ def upload_file():
         # Secure the filename and save
         filename = secure_filename(file.filename)
         file_path = os.path.join(UPLOAD_FOLDER, filename)
-        file.save(file_path)
-        logger.info(f"File saved to: {file_path}")
+        
+        # Ensure upload directory exists
+        os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+        
+        # Save the file
+        try:
+            file.save(file_path)
+            logger.info(f"File saved to: {file_path}")
+        except Exception as e:
+            logger.error(f"Error saving file: {str(e)}")
+            return jsonify({"error": f"Error saving file: {str(e)}"}), 500
 
         # Validate image
         is_valid, error = validate_image(file_path)
@@ -102,6 +112,9 @@ def upload_file():
         processed_path = os.path.join(PROCESSED_FOLDER, filename)
         logger.info(f"Processing image - Input: {file_path}, Output: {processed_path}")
 
+        # Ensure processed directory exists
+        os.makedirs(PROCESSED_FOLDER, exist_ok=True)
+
         try:
             if algorithm == "edge_detection":
                 processed_image = Edge_Detection(file_path)
@@ -112,11 +125,16 @@ def upload_file():
 
             elif algorithm == "smoothing":
                 logger.info("Starting smoothing process")
-                denoised_image_path = denoise_image(file_path, processed_path)
-                if denoised_image_path is None:
-                    logger.error("Smoothing failed - no output path returned")
-                    raise ValueError("Smoothing failed - no output path returned")
-                logger.info(f"Saved processed image to: {processed_path}")
+                try:
+                    denoised_image_path = denoise_image(file_path, processed_path)
+                    if denoised_image_path is None:
+                        logger.error("Smoothing failed - no output path returned")
+                        raise ValueError("Smoothing failed - no output path returned")
+                    logger.info(f"Saved processed image to: {processed_path}")
+                except Exception as e:
+                    logger.error(f"Smoothing process failed: {str(e)}")
+                    logger.error(f"Traceback: {traceback.format_exc()}")
+                    raise ValueError(f"Smoothing process failed: {str(e)}")
 
             elif algorithm == "cnn_blur":
                 kernel_size = 10
@@ -141,15 +159,22 @@ def upload_file():
                 logger.error(f"Invalid algorithm selected: {algorithm}")
                 return jsonify({"error": "Invalid algorithm selected"}), 400
 
+            # Verify the processed file exists
+            if not os.path.exists(processed_path):
+                logger.error(f"Processed file not found at: {processed_path}")
+                raise ValueError("Processed file not found")
+
             logger.info(f"Successfully processed image with {algorithm}")
             return jsonify({"success": True, "filename": filename})
 
         except Exception as e:
             logger.error(f"Error processing image: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
             return jsonify({"error": f"Error processing image: {str(e)}"}), 500
 
     except Exception as e:
         logger.error(f"Unexpected error: {str(e)}")
+        logger.error(f"Traceback: {traceback.format_exc()}")
         return jsonify({"error": "An unexpected error occurred"}), 500
 
 
