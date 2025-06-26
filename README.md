@@ -111,9 +111,3 @@ All errors are logged and displayed to the user with clear messages.
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Acknowledgments
-
-- TensorFlow team for the deep learning framework
-- Flask team for the web framework
-- OpenCV and scikit-image teams for image processing libraries 
